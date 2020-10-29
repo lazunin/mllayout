@@ -1,0 +1,7 @@
+Esc F1 F2 F3 F4 F5 ◀		▶ F6 F7 F8 F9 F10 F11
+Del ! @ { } | ❐1			❐1 ▲ 7 8 9 * F12
+⌫ # $ ( ) ` Hyper			Meh ▼ 4 5 6 + '
+⇧ % ^ [ ] ~					& 1 2 3 \ ⇧
+` , Red Green Blue			▲ . 0 = None
+Anim						ON/OFF
+Br▼ Br▲ Auto				⏸ Hue▼ Hue▲
