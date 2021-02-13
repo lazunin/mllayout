@@ -34,7 +34,12 @@ class Key:
 		
 		dleft, dtop = (15, 10) if self.is_tri else (0, 0)
 		for name, info in self.ki.items():
-			pos = self.pos[0] + info["pos"][0] + dleft, self.pos[1] + info["pos"][1] + dtop
+			ddleft = 3*(len(name)-1) if not self.is_tri else 0
+			left = info["pos"][0] + dleft - ddleft
+			if name.startswith("Anim"): print(left)
+			left_limit = 30 if self.is_tri else 5
+			if left < left_limit: left = left_limit
+			pos = self.pos[0] + left, self.pos[1] + info["pos"][1] + dtop
 			context.SetFont(wx.Font(10, wx.MODERN, wx.NORMAL, wx.FONTWEIGHT_NORMAL, False), wx.Colour(info["rgb"]))
 			context.DrawText(name, *pos)
 
