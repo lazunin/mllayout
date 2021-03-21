@@ -1,0 +1,42 @@
+Download QMK Msys from here https://docs.qmk.fm/#/newbs_getting_started and install,
+From within its terminal (mingw64.exe), run: 
+qmk setup
+It will create a huge git repository somewhere in C:\Users\Vladimir\qmk_firmware (by default).
+
+In C:\Users\Vladimir\qmk_firmware\keyboards\moonlander\keymaps create a folder with your layout 
+name and put sources downloaded from Oryx there (config.h, keymap.c and rules.mk)
+Could probably already build against the "default" firmware with
+qmk compile -kb moonlander -km layout_name
+but some things may not work
+
+To use zsa firmware instead of default firmware:
+(based on the instructions from here: https://github.com/zsa/qmk_firmware/)
+git remote add zsa https://github.com/zsa/qmk_firmware.git
+git fetch --all
+Then it says to check out zsa/master, but I couldn't find that there,
+so I checked out zsa/firmware_20 instead.
+
+In Msys terminal, make sure you're in 'qmk_firmware'
+Run:
+make git-submodule
+
+Now you can probably build your layout with
+make moonlander:layout_name
+as well as with
+qmk compile -kb moonlander -km layout_name
+It will create C:\Users\Vladimir\qmk_firmware\.build\moonlander_lazunin.bin,
+which can be flashed to the keyboard with Wally.
+
+
+
+'lazunin' contains QMK firmware sources modified from thos I downloaded from Oryx.
+Copy it to C:\Users\Vladimir\qmk_firmware\keyboards\moonlander\keymaps
+Then build with 
+qmk compile -kb moonlander -km lazunin
+
++ Toggling between EN and RU layers also sends Ctrl-Alf-1/2 keystrokes to switch the OS input language (couldn't achieve with Oryx)
+- TT tap doesn't work (firmware conflict?)
+
+make git-submodule
+
+make moonlander:lazunin
