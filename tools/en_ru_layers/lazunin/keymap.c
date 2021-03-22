@@ -138,7 +138,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
     		unregister_code(KC_LCTRL);
             break;
         }
+    case TT(EN_HI):                         // to keep Shift pressed
+    case TT(RU_HI):
+        if (record->event.pressed)          // press Shift
+        {
+            register_code(KC_LSHIFT);
+        }
+        else                                // release Shift
+        {
+            unregister_code(KC_LSHIFT);
+        }
   }
   return true;
 }
-
