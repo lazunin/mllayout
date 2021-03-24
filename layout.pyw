@@ -23,9 +23,9 @@ class Key:
 	def draw(self, context):
 		if self.is_tri:
 			shape = [	[self.pos[0], self.pos[1] + self.h],
-						[self.pos[0], self.pos[1] + self.h//2],
-						[self.pos[0] + self.w//2, self.pos[1]],
-						[self.pos[0] + self.w, self.pos[1] + self.h//2],
+						[self.pos[0], self.pos[1] + self.h // 2],
+						[self.pos[0] + self.w // 2, self.pos[1]],
+						[self.pos[0] + self.w, self.pos[1] + self.h // 2],
 						[self.pos[0] + self.w, self.pos[1] + self.h],
 						]
 			context.DrawLines(shape)
@@ -34,9 +34,8 @@ class Key:
 		
 		dleft, dtop = (15, 10) if self.is_tri else (0, 0)
 		for name, info in self.ki.items():
-			ddleft = 3*(len(name)-1) if not self.is_tri else 0
+			ddleft = 3 * (len(name) - 1) if not self.is_tri else 0
 			left = info["pos"][0] + dleft - ddleft
-			if name.startswith("Anim"): print(left)
 			left_limit = 30 if self.is_tri else 5
 			if left < left_limit: left = left_limit
 			pos = self.pos[0] + left, self.pos[1] + info["pos"][1] + dtop
@@ -48,12 +47,12 @@ class KeyPanelBig:
 	def __init__(self, kset, ltr = True):
 		self.keys = []
 		self.tops = [20, 20, 10, 0, 10, 20, 20]
-		left = 10
-		top = 10
-		sz =  50
-		pad = 5
+		left  = 10
+		top   = 10
+		sz    = 50
+		pad   = 5
 		nkeys = 7
-		side = 0 if ltr else 1
+		side  = 0 if ltr else 1
 		for i in range(5):
 			if i > 2: nkeys -= 1
 			tops_ = self.tops[:nkeys]
@@ -77,9 +76,9 @@ class KeyPanelSmall:
 		self.keys = []
 		self.ltr = ltr
 		left = 0
-		top = 0
-		sz =  50
-		pad = 5
+		top  = 0
+		sz   = 50
+		pad  = 5
 		
 		side = 0 if self.ltr else 1
 		ki = kset.get_key_info(side, 5, 0)
@@ -109,7 +108,7 @@ class KeyPanelSmall:
 class TestPanel(wx.Panel):
 	def __init__(self, parent, kbd):
 		wx.Panel.__init__(self, parent, -1)
-		self.Bind(wx.EVT_PAINT, self.OnPaint)		
+		self.Bind(wx.EVT_PAINT, self.OnPaint)
 		
 		self.left_panel_big   = KeyPanelBig  (kbd)
 		self.left_panel_small = KeyPanelSmall(kbd)
@@ -122,7 +121,7 @@ class TestPanel(wx.Panel):
 		pdc = wx.PaintDC(self)
 		try:
 			dc = wx.GraphicsContext.Create(pdc)
-		except:
+		except Exception:
 			dc = pdc
 		
 		rgb = (200, 200, 200)
