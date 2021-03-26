@@ -5,48 +5,37 @@
 enum layers
 {
     EN_LO,
-    EN_HI,
     RU_LO,
-    RU_HI,
     SYMB
 };
 
 enum custom_keycodes
 {
     EN_RU = ML_SAFE_RANGE,  // switch between EN and RU layers and send appropriate OS input language key sequences
-    //Q_SHIFT
+    SP_DOT_COLN,
+    SP_COMMA_SCOLON,
+    SP_EXLM_QUES,
+    
+    SP_RU_EXLM_QUES,        // Shift-1, Shift-7
+    SP_RU_QUO_DQUO,         // KC_QUOTE, Shift-2
+    SP_RU_DOT_COLN,         // RU_DOT, Shift-6
+    SP_RU_COM_SCLN          // Shift-dot, Shift-4
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [EN_LO] = LAYOUT_moonlander(
-	KC_ESCAPE,      KC_1,           KC_2,           KC_3,           KC_4,           KC_5,           KC_EXLM,                                        KC_QUOTE,       KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           KC_MINUS,       
-	KC_PSCREEN,     KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,           KC_SLASH,                                       KC_DOT,         KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_TRANSPARENT, 
-	KC_LSHIFT,      KC_A,           KC_S,           KC_D,           KC_F,           KC_G,           KC_BSLASH,                                      KC_COMMA,       KC_H,           KC_J,           KC_K,           KC_L,           KC_TRANSPARENT, KC_TRANSPARENT, 
-	TT(EN_HI),      KC_Z,           KC_X,           KC_C,           KC_V,           KC_B,                                                                           KC_N,           KC_M,           KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, TT(EN_HI),          
-	EN_RU,          KC_LCTRL,       KC_LALT,        KC_LEFT,        KC_RIGHT,       KC_LGUI,                                                                        KC_ENTER,       KC_UP,          KC_DOWN,        KC_RALT,        KC_RCTRL,       TG(4),          
-	                                                                                KC_SPACE,       KC_TAB,         MO(4),                          MO(4),          KC_DELETE,      KC_BSPACE
-  ),
-  [EN_HI] = LAYOUT_moonlander(
-	KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_QUES,                                        KC_DQUO,        KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_UNDS,        
-	KC_TRANSPARENT, LSFT(KC_Q),     LSFT(KC_W),     LSFT(KC_E),     LSFT(KC_R),     LSFT(KC_T),     KC_TRANSPARENT,                                 KC_COLN,        LSFT(KC_Y),     LSFT(KC_U),     LSFT(KC_I),     LSFT(KC_O),     LSFT(KC_P),     KC_TRANSPARENT, 
-	KC_TRANSPARENT, LSFT(KC_A),     LSFT(KC_S),     LSFT(KC_D),     LSFT(KC_F),     LSFT(KC_G),     KC_TRANSPARENT,                                 KC_SCOLON,      LSFT(KC_H),     LSFT(KC_J),     LSFT(KC_K),     LSFT(KC_L),     KC_TRANSPARENT, KC_TRANSPARENT, 
-	KC_TRANSPARENT, LSFT(KC_Z),     LSFT(KC_X),     LSFT(KC_C),     LSFT(KC_V),     LSFT(KC_B),                                                                     LSFT(KC_N),     LSFT(KC_M),     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
-	KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
-	                                                                                KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT
+	KC_ESCAPE,      KC_1,           KC_2,           KC_3,           KC_4,           KC_5,           SP_EXLM_QUES,                                   KC_QUOTE,       KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           KC_MINUS,       
+	KC_PSCREEN,     KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,           KC_SLASH,                                       SP_DOT_COLN,    KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_TRANSPARENT, 
+	KC_LSHIFT,      KC_A,           KC_S,           KC_D,           KC_F,           KC_G,           KC_BSLASH,                                      SP_COMMA_SCOLON,KC_H,           KC_J,           KC_K,           KC_L,           KC_TRANSPARENT, KC_TRANSPARENT, 
+	KC_LSHIFT,      KC_Z,           KC_X,           KC_C,           KC_V,           KC_B,                                                                           KC_N,           KC_M,           KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_RSHIFT,          
+	EN_RU,          KC_LCTRL,       KC_LALT,        KC_LEFT,        KC_RIGHT,       KC_LGUI,                                                                        KC_ENTER,       KC_UP,          KC_DOWN,        KC_RALT,        KC_RCTRL,       TG(SYMB),          
+	                                                                                KC_SPACE,       KC_TAB,         MO(SYMB),                       MO(SYMB),       KC_DELETE,      KC_BSPACE
   ),
   [RU_LO] = LAYOUT_moonlander(
-	KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, RU_EXLM,                                        KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, RU_MINS,        
-	KC_TRANSPARENT, RU_SHTI,        RU_TSE,         RU_U,           RU_KA,          RU_IE,          RU_SLSH,                                        RU_DOT,         RU_EN,          RU_GHE,         RU_SHA,         RU_SHCH,        RU_ZE,          RU_HA,          
-	KC_TRANSPARENT, RU_EF,          RU_YERU,        RU_VE,          RU_A,           RU_PE,          RU_BSLS,                                        RU_COMM,        RU_ER,          RU_O,           RU_EL,          RU_DE,          RU_ZHE,         RU_E,           
-	TT(RU_HI),      RU_YA,          RU_CHE,         RU_ES,          RU_EM,          RU_I,                                                                           RU_TE,          RU_SOFT,        RU_BE,          RU_YU,          RU_HARD,        TT(RU_HI),          
-	KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
-	                                                                                KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT
-  ),
-  [RU_HI] = LAYOUT_moonlander(
-	KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, RU_QUES,                                        RU_DQUO,        KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, RU_UNDS,        
-	KC_TRANSPARENT, LSFT(RU_SHTI),  LSFT(RU_TSE),   LSFT(RU_U),     LSFT(RU_KA),    LSFT(RU_IE),    KC_TRANSPARENT,                                 RU_COLN,        LSFT(RU_EN),    LSFT(RU_GHE),   LSFT(RU_SHA),   LSFT(RU_SHCH),  LSFT(RU_ZE),    LSFT(RU_HA),    
-	KC_TRANSPARENT, LSFT(RU_EF),    LSFT(RU_YERU),  LSFT(RU_VE),    LSFT(RU_A),     LSFT(RU_PE),    KC_TRANSPARENT,                                 RU_SCLN,        LSFT(RU_ER),    LSFT(RU_O),     LSFT(RU_EL),    LSFT(RU_DE),    LSFT(RU_ZHE),   LSFT(RU_E),     
-	KC_TRANSPARENT, LSFT(RU_YA),    LSFT(RU_CHE),   LSFT(RU_ES),    LSFT(RU_EM),    LSFT(RU_I),                                                                     LSFT(RU_TE),    LSFT(RU_SOFT),  LSFT(RU_BE),    LSFT(RU_YU),    LSFT(RU_HARD),  KC_TRANSPARENT, 
+	KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, SP_RU_EXLM_QUES,                                SP_RU_QUO_DQUO, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, RU_MINS,        
+	KC_TRANSPARENT, RU_SHTI,        RU_TSE,         RU_U,           RU_KA,          RU_IE,          RU_SLSH,                                        SP_RU_DOT_COLN, RU_EN,          RU_GHE,         RU_SHA,         RU_SHCH,        RU_ZE,          RU_HA,          
+	KC_TRANSPARENT, RU_EF,          RU_YERU,        RU_VE,          RU_A,           RU_PE,          RU_BSLS,                                        SP_RU_COM_SCLN, RU_ER,          RU_O,           RU_EL,          RU_DE,          RU_ZHE,         RU_E,           
+	KC_TRANSPARENT, RU_YA,          RU_CHE,         RU_ES,          RU_EM,          RU_I,                                                                           RU_TE,          RU_SOFT,        RU_BE,          RU_YU,          RU_HARD,        KC_TRANSPARENT,          
 	KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
 	                                                                                KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT
   ),
@@ -67,6 +56,11 @@ void keyboard_post_init_user(void) {
   rgb_matrix_enable();
 }
 
+bool is_shifted(void)
+{
+    return (get_mods() & MOD_BIT(KC_LSHIFT) || get_mods() & MOD_BIT(KC_RSHIFT));
+}
+
 // Blue for EN, green for RU, dim colors for base layouts, 
 // brighter whiter colors for shifted layouts;
 // dim red color for SYM
@@ -77,17 +71,16 @@ const uint8_t LT_HI = 255;  // the color component value for shifted layer
 void set_layer_color(int layer)
 {
     uint8_t r = BK_LO, g = BK_LO, b = BK_LO;
-    if ((layer == EN_HI) || (layer == RU_HI))
+    uint8_t v = LT_LO;
+    if (is_shifted())
     {
-        r = BK_HI; g = BK_HI; b = BK_HI;
+        r = BK_HI; g = BK_HI; b = BK_HI; v = LT_HI;
     }
     switch(layer)
     {
-        case EN_LO: b = LT_LO; break;
-        case EN_HI: b = LT_HI; break;
-        case RU_LO: g = LT_LO; break;
-        case RU_HI: g = LT_HI; break;
-        case SYMB:  r = LT_LO; break;
+        case EN_LO: b = v; break;
+        case RU_LO: g = v; break;
+        case SYMB:  r = v; break;
     }
     rgb_matrix_set_color_all(r, g, b);
 }
@@ -104,50 +97,128 @@ void rgb_matrix_indicators_user(void)
   }
 }
 
+void tap_shifted(uint16_t keycode)
+{
+    register_code(KC_LSHIFT);
+    tap_code(keycode);
+    unregister_code(KC_LSHIFT);
+}
+
+void tap_unshifted(uint16_t keycode)
+{
+    unregister_code(KC_LSHIFT);
+    tap_code(keycode);
+    register_code(KC_LSHIFT);
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) 
 {
-  switch (keycode)
-  {
-    case EN_RU:
-        if (record->event.pressed)
-        {
-            register_code(KC_LCTRL);    // begin our OS input language changing sequence
-    		register_code(KC_LSHIFT);
-            if (IS_LAYER_OFF(RU_LO))    // we're on EN_* now - change to RU_*
+    switch (keycode)
+    {
+        //////////////////////////////////////////////////////////
+        // Non-standard lower-upper pairs for English
+        
+        // this works, but not repeating key while held
+        case SP_EXLM_QUES:      // ! -> ?
+            if (record->event.pressed)
             {
-                //layer_off(EN_LO);     // keep EN_LO active for its unique characters?
-                layer_on(RU_LO);        // turn on the Russian layer
-                tap_code(KC_2);         // and send '2' to switch to second OS language
-                if (IS_LAYER_ON(EN_HI)) // if our EN layer in its 'shifted' state - move that to our RU layer
+                if (is_shifted()) tap_code(KC_SLASH);  // shifted slash == question
+                else tap_shifted(KC_1);                 // shifted 1 == exclamation
+            }
+            return false;
+        
+        case SP_DOT_COLN:       // dot -> colon
+            if (record->event.pressed)
+            {
+                if (is_shifted()) tap_code(KC_SCOLON); // shifted semicolon == colon
+                else tap_code(KC_DOT);                  // non-shifted dot
+                
+            }
+            return false;
+        
+        
+       case SP_COMMA_SCOLON:   // comma -> semicolon
+            if (record->event.pressed)
+            {
+                if (is_shifted()) tap_unshifted(KC_SCOLON); // non-shifted semicolon
+                else tap_code(KC_COMMA);                    // non-shifted comma
+            }
+            return false;
+       
+       
+       //////////////////////////////////////////////////////////
+       // Non-standard lower-upper pairs for Russian
+       
+       case SP_RU_EXLM_QUES:                            // ! -> ?
+            if (record->event.pressed)
+            {
+                if (is_shifted()) tap_code(KC_7);       // shifted 1 == !
+                else tap_shifted(KC_1);                 // shifted 7 == ?
+                
+            }
+            return false;
+       
+       case SP_RU_QUO_DQUO:                            // ' -> "
+            if (record->event.pressed)
+            {
+                if (is_shifted()) tap_code(KC_2);      // shifted 2 == "
+                else
                 {
-                    layer_off(EN_HI);
-                    layer_on(RU_HI);
+                    register_code(KC_LCTRL);
+            	    register_code(KC_LSHIFT);
+                    tap_code(KC_1);
+                    unregister_code(KC_LSHIFT);
+            	    unregister_code(KC_LCTRL);
+            	    
+            	    tap_code(KC_QUOT);
+            	    
+            	    register_code(KC_LCTRL);
+            	    register_code(KC_LSHIFT);
+                    tap_code(KC_2);
+                    unregister_code(KC_LSHIFT);
+            	    unregister_code(KC_LCTRL);
                 }
             }
-            else if (IS_LAYER_ON(RU_LO))    // we're on RU_* now - change to EN_*
+            return false;
+            
+       case SP_RU_DOT_COLN:                            // . -> :
+            if (record->event.pressed)
             {
-                layer_off(RU_LO);           // turn off basic RU layer
-                tap_code(KC_1);             // switch OS to its first language
-                if (IS_LAYER_ON(RU_HI))     // transfer the 'shift' state to EN
-                {
-                    layer_off(RU_HI);
-                    layer_on(EN_HI);
-                }
+                if (is_shifted()) tap_code(KC_6);      // shifted 6 == :
+                else tap_code(RU_DOT);
+                
             }
-            unregister_code(KC_LSHIFT);     // release Ctrl and Shift
-    		unregister_code(KC_LCTRL);
-            break;
-        }
-    /*case TT(EN_HI):                         // to keep Shift pressed
-    case TT(RU_HI):
-        if (record->event.pressed)          // press Shift
-        {
-            register_code(KC_LSHIFT);
-        }
-        else                                // release Shift
-        {
-            unregister_code(KC_LSHIFT);
-        }*/
-  }
-  return true;
+            return false;
+       
+       case SP_RU_COM_SCLN:                             // , -> ;
+            if (record->event.pressed)
+            {
+                if (is_shifted()) tap_code(KC_4);       // shifted 4 == ;
+                else tap_shifted(RU_DOT);               // shifted . == ,
+                
+            }
+            return false;
+            
+        case EN_RU:
+            if (record->event.pressed)
+            {
+                register_code(KC_LCTRL);    // begin our OS input language changing sequence
+            	register_code(KC_LSHIFT);
+                if (IS_LAYER_OFF(RU_LO))    // we're on EN_* now - change to RU_*
+                {
+                    //layer_off(EN_LO);     // keep EN_LO active for its unique characters?
+                    layer_on(RU_LO);        // turn on the Russian layer
+                    tap_code(KC_2);         // and send '2' to switch to second OS language
+                }
+                else if (IS_LAYER_ON(RU_LO))    // we're on RU_* now - change to EN_*
+                {
+                    layer_off(RU_LO);           // turn off basic RU layer
+                    tap_code(KC_1);             // switch OS to its first language
+                }
+                unregister_code(KC_LSHIFT);     // release Ctrl and Shift
+            	unregister_code(KC_LCTRL);
+                break;
+            }
+    }
+    return true;
 }
