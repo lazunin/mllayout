@@ -12,14 +12,20 @@ enum layers
 enum custom_keycodes
 {
     EN_RU = ML_SAFE_RANGE,  // switch between EN and RU layers and send appropriate OS input language key sequences
-    SP_DOT_COLN,
-    SP_COMMA_SCOLON,
-    SP_EXLM_QUES,
     
-    SP_RU_EXLM_QUES,        // Shift-1, Shift-7
-    SP_RU_QUO_DQUO,         // KC_QUOTE, Shift-2
-    SP_RU_DOT_COLN,         // RU_DOT, Shift-6
-    SP_RU_COM_SCLN          // Shift-dot, Shift-4
+    // Defining custom key codes to keep the punctuation marks matching 
+    // between the English and Russian layouts
+    
+                            // English
+    SP_DOT_COLN,            // .:
+    SP_COMMA_SCOLON,        // ,;
+    SP_EXLM_QUES,           // !?
+    
+                            // Russian
+    SP_RU_EXLM_QUES,        // !? (Shift-1, Shift-7)
+    SP_RU_QUO_DQUO,         // '" (EN -> KC_QUOTE -> RU, Shift-2)
+    SP_RU_DOT_COLN,         // .: (RU_DOT, Shift-6)
+    SP_RU_COM_SCLN          // ,; (Shift-dot, Shift-4)
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -59,6 +65,16 @@ void keyboard_post_init_user(void) {
 bool is_shifted(void)
 {
     return (get_mods() & MOD_BIT(KC_LSHIFT) || get_mods() & MOD_BIT(KC_RSHIFT));
+}
+
+bool is_lshifted(void)
+{
+    return (get_mods() & MOD_BIT(KC_LSHIFT));
+}
+
+bool is_rshifted(void)
+{
+    return (get_mods() & MOD_BIT(KC_RSHIFT));
 }
 
 // Blue for EN, green for RU, dim colors for base layouts, 
@@ -106,9 +122,14 @@ void tap_shifted(uint16_t keycode)
 
 void tap_unshifted(uint16_t keycode)
 {
-    unregister_code(KC_LSHIFT);
+    uint16_t l = is_lshifted();
+    uint16_t r = is_rshifted();
+    
+    if (l) unregister_code(KC_LSHIFT);
+    if (r) unregister_code(KC_RSHIFT);
     tap_code(keycode);
-    register_code(KC_LSHIFT);
+    if (l) register_code(KC_LSHIFT);
+    if (r) register_code(KC_RSHIFT);
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) 
