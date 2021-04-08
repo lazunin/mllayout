@@ -1,0 +1,12 @@
+Build the firmware according to this:
+https://beta.docs.qmk.fm/using-qmk/software-features/feature_rawhid
+
+Install pyhidapi:
+https://pypi.org/project/hid/
+
+Install hidapi. Download binary release:
+https://github.com/libusb/hidapi/releases
+Copy the appropriate hidapi.dll into Windows\system32, reboot
+
+
+Send data (see testhid.py)

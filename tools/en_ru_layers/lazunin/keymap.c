@@ -1,5 +1,6 @@
 #include QMK_KEYBOARD_H
 #include "version.h"
+#include "raw_hid.h"
 #include "keymap_russian.h"
 
 enum layers
@@ -77,6 +78,8 @@ bool is_rshifted(void)
     return (get_mods() & MOD_BIT(KC_RSHIFT));
 }
 
+bool is_ja = false; // Japanese has no layer, but we use different color when it's active
+
 // Blue for EN, green for RU, dim colors for base layouts, 
 // brighter whiter colors for shifted layouts;
 // dim red color for SYM
@@ -97,6 +100,13 @@ void set_layer_color(int layer)
         case EN_LO: b = v; break;
         case RU_LO: g = v; break;
         case SYMB:  r = v; break;
+    }
+    
+    // OS Japanese input works with English layer, but switches
+    // the keyboard to yellow color
+    if (is_ja && (layer != SYMB))
+    {
+        b = r; r = v; g = v;
     }
     rgb_matrix_set_color_all(r, g, b);
 }
@@ -242,4 +252,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             }
     }
     return true;
+}
+
+enum layer_cmds
+{
+    LAYER_SET_EN = 1,
+    LAYER_SET_RU,
+    LAYER_SET_JA,
+    LAYER_SET_SYM
+};
+
+void raw_hid_receive(uint8_t *data, uint8_t length)
+{
+    if (length == 0) return;
+    uint8_t i = 0;
+    uint8_t cmd = data[i++];
+    
+    switch(cmd)
+    {
+        case LAYER_SET_EN:
+            if (IS_LAYER_ON(RU_LO)) layer_off(RU_LO);
+            is_ja = false;
+            break;
+        case LAYER_SET_RU:
+            if (IS_LAYER_OFF(RU_LO)) layer_on(RU_LO);
+            is_ja = false;
+            break;
+        case LAYER_SET_JA:
+            is_ja = true;
+            break;
+    }
 }

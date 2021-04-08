@@ -3,4 +3,5 @@
 CONSOLE_ENABLE = no
 COMMAND_ENABLE = no
 MOUSEKEY_ENABLE = no
+RAW_ENABLE = yes
 SRC = matrix.c
