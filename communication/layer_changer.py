@@ -11,29 +11,40 @@ def get_active_language():
 	lid = klid & (2**16 - 1)
 	return lid
 
-vendor_id  = 0x3297  # Found in config.h for the keyboard's main directory
-product_id = 0x1969  # (one level above "keymaps")
+class Moonlander:
+	def __init__(self):
+		self.vendor_id  = 0x3297  # Found in config.h for the keyboard's main directory
+		self.product_id = 0x1969  # (one level above "keymaps")
 
-usage_page = 0xFF60  # The defaults, can be redefined in the same config.h
-usage      = 0x61
-path       = None    # Found with the code below
+		self.usage_page = 0xFF60  # The defaults, can be redefined in the same config.h
+		self.usage      = 0x61
+		self.path       = None    # Found with the code below
+		
+		for d in hid.enumerate(self.vendor_id, self.product_id):
+			if d["usage_page"] == self.usage_page and d["usage"] == self.usage:
+				self.path = d["path"]
+	
+	def write(self, data):
+		if self.path is None: return False
+		with hid.Device(self.vendor_id, self.product_id, path = self.path) as device:
+			data_ = b'\0' + data
+			device.write(data_)
+		return True
 
-for d in hid.enumerate(vendor_id, product_id):
-	if d["usage_page"] == usage_page and d["usage"] == usage:
-		path = d["path"]
+class LayerChanger:
+	def __init__(self):
+		self.ml = Moonlander()
+		# English, Russian, Japanese (http://atpad.sourceforge.net/languages-ids.txt)
+		self.lids = {0x409: b'\1', 0x419: b'\2', 0x411: b'\3'}
+		self.LID = None
+	
+	def update(self):
+		lid = get_active_language()
+		if (lid != self.LID) and (lid in self.lids.keys()):
+			self.LID = lid
+			self.ml.write(self.lids[lid])
 
-if path is None:
-	print("Couldn't connect")
-	sys.exit(0)
-
-# English, Russian, Japanese (http://atpad.sourceforge.net/languages-ids.txt)
-lids = {0x409: b'\0\1', 0x419: b'\0\2', 0x411: b'\0\3'}
-LID = None
+lc = LayerChanger()
 while True:
-	lid = get_active_language()
-	if (lid != LID) and (lid in lids.keys()):
-		LID = lid
-		#print(lid)
-		with hid.Device(vendor_id, product_id, path = path) as device:
-			device.write(lids[lid])
+	lc.update()
 	time.sleep(0.5)
