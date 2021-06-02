@@ -35,8 +35,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	KC_PSCREEN,     KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,           KC_SLASH,                                       SP_DOT_COLN,    KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_TRANSPARENT, 
 	KC_LSHIFT,      KC_A,           KC_S,           KC_D,           KC_F,           KC_G,           KC_BSLASH,                                      SP_COMMA_SCOLON,KC_H,           KC_J,           KC_K,           KC_L,           KC_TRANSPARENT, KC_TRANSPARENT, 
 	KC_LSHIFT,      KC_Z,           KC_X,           KC_C,           KC_V,           KC_B,                                                                           KC_N,           KC_M,           KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_RSHIFT,          
-	EN_RU,          KC_LCTRL,       KC_LALT,        KC_LEFT,        KC_RIGHT,       KC_LGUI,                                                                        KC_ENTER,       KC_UP,          KC_DOWN,        KC_RALT,        KC_RCTRL,       TG(SYMB),          
-	                                                                                KC_SPACE,       KC_TAB,         MO(SYMB),                       MO(SYMB),       KC_DELETE,      KC_BSPACE
+	KC_LCTRL,       KC_LALT,        KC_TRANSPARENT, KC_LALT,        KC_LCTRL,       KC_LGUI,                                                                        KC_ENTER,       KC_UP,          KC_DOWN,        KC_RALT,        KC_RCTRL,       EN_RU,          
+	                                                                                KC_SPACE,       KC_TAB,         TT(SYMB),                       TT(SYMB),       KC_DELETE,      KC_BSPACE
   ),
   [RU_LO] = LAYOUT_moonlander(
 	KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, SP_RU_EXLM_QUES,                                SP_RU_QUO_DQUO, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, RU_MINS,        
