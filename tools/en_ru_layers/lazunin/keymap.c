@@ -26,7 +26,10 @@ enum custom_keycodes
     SP_RU_EXLM_QUES,        // !? (Shift-1, Shift-7)
     SP_RU_QUO_DQUO,         // '" (EN -> KC_QUOTE -> RU, Shift-2)
     SP_RU_DOT_COLN,         // .: (RU_DOT, Shift-6)
-    SP_RU_COM_SCLN          // ,; (Shift-dot, Shift-4)
+    SP_RU_COM_SCLN,         // ,; (Shift-dot, Shift-4)
+    
+    SYMB_LEFT,
+    SYMB_RIGHT
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -36,7 +39,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	KC_LSHIFT,      KC_A,           KC_S,           KC_D,           KC_F,           KC_G,           KC_BSLASH,                                      SP_COMMA_SCOLON,KC_H,           KC_J,           KC_K,           KC_L,           KC_TRANSPARENT, KC_TRANSPARENT, 
 	KC_LSHIFT,      KC_Z,           KC_X,           KC_C,           KC_V,           KC_B,                                                                           KC_N,           KC_M,           KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_RSHIFT,          
 	KC_LCTRL,       KC_LALT,        KC_TRANSPARENT, KC_LALT,        KC_LCTRL,       KC_LGUI,                                                                        KC_ENTER,       KC_UP,          KC_DOWN,        KC_RALT,        KC_RCTRL,       EN_RU,          
-	                                                                                KC_SPACE,       KC_TAB,         TT(SYMB),                       TT(SYMB),       KC_DELETE,      KC_BSPACE
+	                                                                                KC_SPACE,       KC_TAB,         SYMB_LEFT,                      SYMB_RIGHT,     KC_DELETE,      KC_BSPACE
   ),
   [RU_LO] = LAYOUT_moonlander(
 	KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, SP_RU_EXLM_QUES,                                SP_RU_QUO_DQUO, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, RU_MINS,        
@@ -141,6 +144,13 @@ void tap_unshifted(uint16_t keycode)
     if (l) register_code(KC_LSHIFT);
     if (r) register_code(KC_RSHIFT);
 }
+
+bool is_left_sym_pressed = false;
+bool is_right_sym_pressed = false;
+bool sym_toggled_on = false;
+
+bool is_left_shift_pressed = false;
+bool is_right_shift_pressed = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) 
 {
@@ -250,7 +260,78 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             	unregister_code(KC_LCTRL);
                 break;
             }
+        
+        // pressing both SYM keys should toggle the SYMB layer,
+        // holding either of SYM keys should activate it until the key is released
+        case SYMB_LEFT:
+            if (record->event.pressed)
+            {
+                is_left_sym_pressed = true;
+            }
+            else
+            {
+                is_left_sym_pressed = false;
+            }
+            break;
+        case SYMB_RIGHT:
+            if (record->event.pressed)
+            {
+                is_right_sym_pressed = true;
+            }
+            else
+            {
+                is_right_sym_pressed = false;
+            }
+            break;
+        
+        // both shifts should act as CapsLock
+        case KC_LSHIFT:
+            if (record->event.pressed)
+            {
+                is_left_shift_pressed = true;
+            }
+            else
+            {
+                is_left_shift_pressed = false;
+            }
+            break;
+        case KC_RSHIFT:
+            if (record->event.pressed)
+            {
+                is_right_shift_pressed = true;
+            }
+            else
+            {
+                is_right_shift_pressed = false;
+            }
+            break;
     }
+    
+        // if both left and right SYM keys are pressed - toggle the SYM layer
+        if ( is_left_sym_pressed && is_right_sym_pressed)
+        {
+            sym_toggled_on = !sym_toggled_on;
+            if (sym_toggled_on) layer_on(SYMB);
+            else layer_off(SYMB);
+        }
+        
+        // else, if at least one of them is pressed - activate the SYMB layer until it's released
+        else if ( is_left_sym_pressed || is_right_sym_pressed)
+        {
+            layer_on(SYMB);
+        }
+        else if (!sym_toggled_on) // if SYM is toggled by double-key, releasing one key should have no effect
+        {
+            layer_off(SYMB);
+        }
+        
+        if ( is_left_shift_pressed && is_right_shift_pressed)
+        {
+            tap_code(KC_CAPS);
+            return false;
+        }
+        
+        
     return true;
 }
 
