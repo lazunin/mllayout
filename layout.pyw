@@ -116,14 +116,13 @@ class TestPanel(wx.Panel):
 		self.right_panel_big   = KeyPanelBig  (kbd, ltr = False)
 		self.right_panel_small = KeyPanelSmall(kbd, ltr = False)
 		
-		
-	def OnPaint(self, evt):
-		pdc = wx.PaintDC(self)
-		try:
-			dc = wx.GraphicsContext.Create(pdc)
-		except Exception:
-			dc = pdc
-		
+		# Drawing the keyboard into a bitmap
+		self.bmp = wx.Bitmap(978, 485)
+		dc = wx.MemoryDC()
+		dc.SelectObject(self.bmp)
+		dc.SetBackground(wx.Brush(wx.Colour(255, 255, 255, wx.ALPHA_OPAQUE)))
+		dc.Clear()
+		dc = wx.GraphicsContext.Create(dc)
 		rgb = (200, 200, 200)
 		dc.SetPen(wx.Pen(wx.Colour(*rgb, wx.ALPHA_OPAQUE)))
 		dc.SetBrush(wx.Brush(wx.Colour(*rgb, 128)))
@@ -133,6 +132,11 @@ class TestPanel(wx.Panel):
 		
 		self.right_panel_big.draw(dc)
 		self.right_panel_small.draw(dc)
+		
+		
+	def OnPaint(self, evt):
+		pdc = wx.PaintDC(self)
+		pdc.DrawBitmap(self.bmp, 0, 0)
 
 
 class MainWindow(wx.Frame):
@@ -151,7 +155,7 @@ class MainWindow(wx.Frame):
 		self.windowSizer.Add(self.control, 1, wx.ALL|wx.EXPAND)
 		
 		self.SetSizer(self.windowSizer)
-		self.SetSize(wx.Size((970, 485)))
+		self.SetSize(wx.Size((978, 485)))
 
 app = wx.App()
 
